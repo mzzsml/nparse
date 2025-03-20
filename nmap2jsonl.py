@@ -10,7 +10,13 @@ def is_file_already_existing(file) -> bool:
     return True if os.stat(file) else False
 
 def parse_port(xml_element):
-    port_details = {}
+    port_details = {
+        "port_state": None,
+        "reason": None,
+        "service": None,
+        "product": None,
+        "version": None
+    }
     for child in xml_element:
         match child.tag:
             case 'state':
