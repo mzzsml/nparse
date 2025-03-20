@@ -7,7 +7,7 @@ import argparse
 import xml.etree.ElementTree as ET
 
 def is_file_already_existing(file) -> bool:
-    return True if os.stat(file) else False
+    return True if os.path.exists(file) else False
 
 def parse_port(xml_element):
     port_details = {
@@ -32,6 +32,11 @@ def parse_port(xml_element):
                             port_details['product'] = child.attrib['product']
                         case 'version':
                             port_details['version'] = child.attrib['version']
+                        # NOTE: Maybe it's actually better to have a separate column for better compatibility with endoflife.date apis.
+                        case 'extrainfo':
+                            if port_details['version'] == None:
+                                port_details['version'] = ''
+                            port_details['version'] += f" ({child.attrib['extrainfo']})"
                 yield port_details
 
 def parse_ports(xml_element):
