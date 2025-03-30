@@ -8,6 +8,7 @@ import argparse
 from models.scan import Scan
 
 from parser.parser import parse
+from parser.tojsonl import tojsonl
 
 def is_file_already_existing(file) -> bool:
     return True if os.path.exists(file) else False
@@ -27,10 +28,12 @@ if __name__ == '__main__':
         with open(args.filename, mode='r') as f:
             s = Scan()
             s = parse(xmlfile=f)
-            print(json.dumps(s))
+            [print(x) for x in tojsonl(s)]
     else:
         # If file exists and it's size is bigger than 0, delete it's content.
         if is_file_already_existing(args.output) and os.stat(args.output).st_size != 0:
             open(args.output, 'w').close()
         with open(args.output, '+a') as f:
-            json.dump(parse(args.filename, f))
+            s = Scan()
+            s = parse(xmlfile=args.filename)
+            [json.dump(x, f) for x in tojsonl(s)]

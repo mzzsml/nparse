@@ -4,7 +4,9 @@ from models.scan import Scan
 from models.host import Host
 from models.port import Port
 
-def parse_ports(xml_port):
+def parse_ports(xml_port) -> Port:
+    """Parse the `ports` node of the Nmap XML output."""
+
     _ = []
     for child in xml_port:
         p = Port()
@@ -26,10 +28,12 @@ def parse_ports(xml_port):
                             p.version = x.attrib['version']
                         if j == 'extrainfo':
                             p.extrainfo = x.attrib['extrainfo']
-                    _.append(p.asdict())
+                    _.append(p)
     return _
 
-def parse_host(xml_host):
+def parse_host(xml_host) -> Host:
+    """Parse the `host` node of the Nmap XML output."""
+
     h = Host()
     for child in xml_host:
         if child.tag == 'address':
@@ -41,9 +45,11 @@ def parse_host(xml_host):
                 h.hostname = x.attrib['name'] 
         elif child.tag == 'ports':
             h.ports = parse_ports(child)
-    return h.asdict()
+    return h
 
-def parse(xmlfile):
+def parse(xmlfile) -> Scan:
+    """Parse the Nmap XML output."""
+
     tree = ET.parse(xmlfile)
     root = tree.getroot()
 
@@ -55,4 +61,4 @@ def parse(xmlfile):
             scan.protocol = child.attrib['protocol']
         elif child.tag == 'host':
             scan.hosts.append(parse_host(child))
-    return scan.asdict()
+    return scan
