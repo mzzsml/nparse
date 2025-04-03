@@ -1,6 +1,7 @@
 .vscode/
 models/__pycache__/
-parser/__pycache__/
+lib/__pycache__/
 test/
 
 .DS_Store
+test.py
