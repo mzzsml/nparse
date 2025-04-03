@@ -1,8 +1,8 @@
 class Host:
-    def __init__(self):
-        self.addr = None # host > address
-        self.hostname = None # hostnames > hostname.name
-        self.ports = []
+    def __init__(self, addr=None, hostname=None, ports=[]):
+        self.addr = addr # host > address
+        self.hostname = hostname # hostnames > hostname.name
+        self.ports = ports # List of Port objects.
     
     def asdict(self):
         return {

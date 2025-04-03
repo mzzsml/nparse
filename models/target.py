@@ -1,16 +1,25 @@
+from models.scan import Scan
+
 class Target:
-    def __init__(self):
-        self.addr = None
-        self.hostname = None
-        self.port = None
-        self.protocol = None
-        self.port_state = None
-        self.reason = None
-        self.service = None
-        self.product = None
-        self.version = None
-        self.scan_type = None
-        self.extrainfo = None
+    """The Target object.
+    
+    It stores the information of the target host in a standalone, complete JSON.
+    One for every host and port."""
+
+    def __init__(self, addr=None, hostname=None, port=None, protocol=None,
+                 port_state=None, reason=None, service=None, product=None,
+                 version=None, scan_type=None, extrainfo=None):
+        self.addr = addr
+        self.hostname = hostname
+        self.port = port
+        self.protocol = protocol
+        self.port_state = port_state
+        self.reason = reason
+        self.service = service
+        self.product = product
+        self.version = version
+        self.scan_type = scan_type
+        self.extrainfo = extrainfo
     
     def asdict(self):
         return {

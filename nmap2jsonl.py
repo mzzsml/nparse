@@ -1,17 +1,14 @@
 #!/usr/bin/env python3
 
-import os
 import sys
 import json
 import argparse
 
 from models.scan import Scan
+from models.file import File
 
-from parser.parser import parse
-from parser.tojsonl import tojsonl
-
-def is_file_already_existing(file) -> bool:
-    return True if os.path.exists(file) else False
+from lib.parser import parse
+from lib.tojsonl import tojsonl
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(
@@ -25,14 +22,15 @@ if __name__ == '__main__':
     args = parser.parse_args()
 
     if args.output == sys.stdout:
-        with open(args.filename, mode='r') as f:
-            s = Scan()
-            s = parse(xmlfile=f)
-            [print(x) for x in tojsonl(s)]
+        xmlfile = File(args.filename)
+        s = Scan()
+        s = parse(xmlfile=xmlfile.path)
+        [print(x) for x in tojsonl(s)]
     else:
+        f = File(path=args.output)
         # If file exists and it's size is bigger than 0, delete it's content.
-        if is_file_already_existing(args.output) and os.stat(args.output).st_size != 0:
-            open(args.output, 'w').close()
+        if f.exists() and f.size != 0:
+            f.deletecontent()
         with open(args.output, '+a') as f:
             s = Scan()
             s = parse(xmlfile=args.filename)

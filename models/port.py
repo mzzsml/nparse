@@ -1,12 +1,13 @@
 class Port:
-    def __init__(self):
-        self.port = None # ports > port.portid
-        self.port_state = None
-        self.reason = None
-        self.service = None # port > service.name
-        self.product = None # port > service.product
-        self.version = None # port > service.version
-        self.extrainfo = None
+    def __init__(self, port=None, port_state=None, reason=None, service=None,
+                 product=None, version=None, extrainfo=None):
+        self.port = port # ports > port.portid
+        self.port_state = port_state
+        self.reason = reason
+        self.service = service # port > service.name
+        self.product = product # port > service.product
+        self.version = version # port > service.version
+        self.extrainfo = extrainfo
     
     def asdict(self):
         return {
