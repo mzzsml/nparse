@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 
 import sys
-import json
 import argparse
 
 from models.scan import Scan
@@ -31,7 +30,4 @@ if __name__ == '__main__':
         # If file exists and it's size is bigger than 0, delete it's content.
         if f.exists() and f.size != 0:
             f.deletecontent()
-        with open(args.output, '+a') as f:
-            s = Scan()
-            s = parse(xmlfile=args.filename)
-            [json.dump(x, f) for x in tojsonl(s)]
+        f.writecontent(parse(xmlfile=args.filename))

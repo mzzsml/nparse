@@ -1,4 +1,10 @@
 class Port:
+    """The Port object.
+    
+    Stores information about the state of a port and the
+    service running on it.
+    """
+
     def __init__(self, port=None, port_state=None, reason=None, service=None,
                  product=None, version=None, extrainfo=None):
         self.port = port # ports > port.portid
