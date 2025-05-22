@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE nmaprun>
+<?xml-stylesheet href="file:///opt/homebrew/bin/../share/nmap/nmap.xsl" type="text/xsl"?>
+<!-- Nmap 7.95 scan initiated Wed May 21 19:04:46 2025 as: nmap -sSCV -v -F -oX test/nmaptest.xml 192.168.1.48 -->
+<nmaprun scanner="nmap" args="nmap -sSCV -v -F -oX test/nmaptest.xml 192.168.1.48" start="1747847086" startstr="Wed May 21 19:04:46 2025" version="7.95" xmloutputversion="1.05">
+	<scaninfo type="syn" protocol="tcp" numservices="100" services="7,9,13,21-23,25-26,37,53,79-81,88,106,110-111,113,119,135,139,143-144,179,199,389,427,443-445,465,513-515,543-544,548,554,587,631,646,873,990,993,995,1025-1029,1110,1433,1720,1723,1755,1900,2000-2001,2049,2121,2717,3000,3128,3306,3389,3986,4899,5000,5009,5051,5060,5101,5190,5357,5432,5631,5666,5800,5900,6000-6001,6646,7070,8000,8008-8009,8080-8081,8443,8888,9100,9999-10000,32768,49152-49157"/>
+	<verbose level="1"/>
+	<debugging level="0"/>
+	<taskbegin task="NSE" time="1747847086"/>
+	<taskend task="NSE" time="1747847086"/>
+	<taskbegin task="NSE" time="1747847086"/>
+	<taskend task="NSE" time="1747847086"/>
+	<taskbegin task="NSE" time="1747847086"/>
+	<taskend task="NSE" time="1747847086"/>
+	<taskbegin task="ARP Ping Scan" time="1747847086"/>
+	<hosthint>
+		<status state="up" reason="arp-response" reason_ttl="0"/>
+		<address addr="192.168.1.48" addrtype="ipv4"/>
+		<address addr="BC:24:11:2D:B1:C5" addrtype="mac" vendor="Proxmox Server Solutions GmbH"/>
+		<hostnames></hostnames>
+	</hosthint>
+	<taskend task="ARP Ping Scan" time="1747847086" extrainfo="1 total hosts"/>
+	<taskbegin task="Parallel DNS resolution of 1 host." time="1747847086"/>
+	<taskend task="Parallel DNS resolution of 1 host." time="1747847086"/>
+	<taskbegin task="SYN Stealth Scan" time="1747847086"/>
+	<taskend task="SYN Stealth Scan" time="1747847088" extrainfo="100 total ports"/>
+	<taskbegin task="Service scan" time="1747847088"/>
+	<taskend task="Service scan" time="1747847094" extrainfo="2 services on 1 host"/>
+	<taskbegin task="NSE" time="1747847094"/>
+	<taskend task="NSE" time="1747847096"/>
+	<taskbegin task="NSE" time="1747847096"/>
+	<taskend task="NSE" time="1747847097"/>
+	<taskbegin task="NSE" time="1747847097"/>
+	<taskend task="NSE" time="1747847097"/>
+	<host starttime="1747847086" endtime="1747847097">
+		<status state="up" reason="arp-response" reason_ttl="0"/>
+		<address addr="192.168.1.48" addrtype="ipv4"/>
+		<address addr="BC:24:11:2D:B1:C5" addrtype="mac" vendor="Proxmox Server Solutions GmbH"/>
+		<hostnames></hostnames>
+		<ports>
+			<extraports state="filtered" count="98">
+				<extrareasons reason="no-response" count="91" proto="tcp" ports="7,9,13,23,25-26,37,53,79,81,88,106,110,113,119,135,139,143-144,179,199,389,427,443-445,465,513-515,543-544,548,554,587,631,646,873,990,1025-1029,1110,1433,1720,1723,1755,1900,2000-2001,2049,2121,2717,3000,3128,3306,3986,4899,5000,5009,5051,5060,5101,5190,5357,5631,5666,5800,6000-6001,6646,7070,8000,8008-8009,8080-8081,8443,8888,9100,9999-10000,32768,49152-49157"/>
+				<extrareasons reason="admin-prohibited" count="7" proto="tcp" ports="21,80,111,993,995,3389,5900"/>
+			</extraports>
+			<port protocol="tcp" portid="22">
+				<state state="open" reason="syn-ack" reason_ttl="64"/>
+				<service name="ssh" product="OpenSSH" version="9.9" extrainfo="protocol 2.0" method="probed" conf="10">
+					<cpe>cpe:/a:openbsd:openssh:9.9</cpe>
+				</service>
+				<script id="ssh-hostkey" output="&#xa;  256 7a:b1:0c:87:f3:20:20:30:0c:27:c5:2e:1c:a2:f9:db (ECDSA)&#xa;  256 c6:ba:25:eb:53:6b:b0:74:02:45:8d:f1:48:c9:11:69 (ED25519)">
+					<table>
+						<elem key="key">AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBBvNmVglpPF514qDiSUAV2fiGB+FETy/xHvrCZ6Ub1Tjv6b5XDONyZlHLlLvg0oZLa6Nb2kWB76Wy5OUmevuW3w=</elem>
+						<elem key="type">ecdsa-sha2-nistp256</elem>
+						<elem key="bits">256</elem>
+						<elem key="fingerprint">7ab10c87f32020300c27c52e1ca2f9db</elem>
+					</table>
+					<table>
+						<elem key="key">AAAAC3NzaC1lZDI1NTE5AAAAIAY3bOryjn53burYgBh29J90ENj4GOua4jhOJv4g0sMz</elem>
+						<elem key="type">ssh-ed25519</elem>
+						<elem key="bits">256</elem>
+						<elem key="fingerprint">c6ba25eb536bb07402458df148c91169</elem>
+					</table>
+				</script>
+			</port>
+			<port protocol="tcp" portid="5432">
+				<state state="open" reason="syn-ack" reason_ttl="64"/>
+				<service name="postgresql" product="PostgreSQL DB" version="9.6.0 or later" method="probed" conf="10">
+					<cpe>cpe:/a:postgresql:postgresql</cpe>
+				</service>
+			</port>
+		</ports>
+		<times srtt="13012" rttvar="5332" to="100000"/>
+	</host>
+	<taskbegin task="NSE" time="1747847097"/>
+	<taskend task="NSE" time="1747847097"/>
+	<taskbegin task="NSE" time="1747847097"/>
+	<taskend task="NSE" time="1747847097"/>
+	<taskbegin task="NSE" time="1747847097"/>
+	<taskend task="NSE" time="1747847097"/>
+	<runstats>
+		<finished time="1747847097" timestr="Wed May 21 19:04:57 2025" summary="Nmap done at Wed May 21 19:04:57 2025; 1 IP address (1 host up) scanned in 10.75 seconds" elapsed="10.75" exit="success"/>
+		<hosts up="1" down="0" total="1"/>
+	</runstats>
+</nmaprun>
