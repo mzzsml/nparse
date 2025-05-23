@@ -6,6 +6,7 @@ import (
     "log"
     "fmt"
     //"bytes"
+    "flag"
 
     "github.com/mzzsml/nmap2jsonl/types"
 )
@@ -28,7 +29,12 @@ func output(s types.Nmaprun) {
 }
 
 func main() {
-    xmlfile, err := os.ReadFile("./test/nmaptest.xml")
+    flag.Parse()
+
+    // passiamo il nome del file, che viene passato come flag in go
+    filename := flag.Arg(0)
+
+    xmlfile, err := os.ReadFile(filename)
     if err != nil {
         log.Fatal(err)
     }
