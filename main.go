@@ -1,47 +1,59 @@
 package main
 
 import (
-    "encoding/xml"
-    "os"
-    "log"
-    "fmt"
-    //"bytes"
+    //"encoding/xml"
+    "encoding/json"
     "flag"
-
-    "github.com/mzzsml/nmap2jsonl/types"
+    "fmt"
+    "log"
+    "os"
 )
 
-func output(s types.Nmaprun) {
-    fmt.Fprintf(os.Stdout, "args: %v\n", s.Args)
-    for _, h := range s.Hosts {
-        fmt.Fprintf(os.Stdout, "host addrs: %v\n", h.Addrs)
-        for _, port := range h.Ports {
+//func unmarshalXml (f string) {
+//    var n Nmaprun
+//    filecontent, err := os.Open(f)
+//    if err != nil {
+//       log.Fatal(err)
+//    }
+//    err = xml.Unmarshal([]byte(filecontent), &n)
+//    if err != nil {
+//        log.Fatal(err)
+//    }
+//}
 
-            fmt.Fprintf(os.Stdout, "port proto: %v\n", port.Protocol)
-            fmt.Fprintf(os.Stdout, "port id: %v\n", port.PortId)
-            fmt.Fprintf(os.Stdout, "port status: %v\n", port.State)
-            service := port.Service
-            fmt.Fprintf(os.Stdout, "service name: %v\n", service.Name)
-            fmt.Fprintf(os.Stdout, "service product: %v\n", service.Product)
-            fmt.Fprintf(os.Stdout, "service extrainfo: %v\n", service.Extrainfo)
-        }
-    }
-}
-
-func main() {
-    flag.Parse()
-
-    // passiamo il nome del file, che viene passato come flag in go
-    filename := flag.Arg(0)
-
-    xmlfile, err := os.ReadFile(filename)
+// decodeXml decodes the Nmap XML into a Nmaprun struct.
+func decodeXml(f string) Nmaprun {
+    var n Nmaprun
+    filecontent, err := os.Open(f)
     if err != nil {
         log.Fatal(err)
     }
-    //os.Stdout.Write(xmlfile)
+    n = parse(filecontent)
+    return n
+}
 
-    // proviamo a leggere lo struct Nmaprun.
-    var n types.Nmaprun
-    xml.Unmarshal(xmlfile, &n)
-    output(n)
+// jsonEncode encodes an Nmaprun variable to JSON.
+func jsonEncode(n Nmaprun) []byte {
+    b, err := json.Marshal(&n)
+    if err != nil {
+        log.Fatal(err)
+    }
+    return b
+}
+
+func main() {
+    // In orded to be able to access the file passed as an argument,
+    // we need to parse all the arguments.
+    flag.Parse()
+    // We can access the filename with Arg(0), since it always points to the first argument
+    // that IS NOT a flag.
+    filename := flag.Arg(0)
+    //asd := unmarshalXml(filename)
+    n := decodeXml(filename)
+
+    b := jsonEncode(n)
+    fmt.Fprintf(os.Stdout, "%s\n", b)
+
+    //jsonl
+    fmt.Fprintf(os.Stdout, "JSONL: %s\n", jsonl(n))
 }
