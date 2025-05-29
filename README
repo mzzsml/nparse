@@ -1,35 +1,20 @@
-# Nmap2jsonl
+# Nparse
 
-`Nmap2jsonl` converts Nmap's XML output to JSONL.
+Nmap Parser.
 
-No external libraries required.
+`nparse` converts Nmap's XML output to JSON and JSONL.
 
 ## Usage
 
-`nmap2jsonl` takes the Nmap XML output:
-
 ```txt
-$ python3 ./nmap2jsonl.py nmap-out.xml
+$ nparse nmap-out.xml
 ```
 
-Use the `-o` to write the content to a file:
+By default Nparse will print it's output in JSON format.<br>
+To have a JSON formatted output, specify the `-jsonl` flag.
 
-```txt
-$ python3 ./nmap2jsonl.py nmap-out.xml -o nmap-out.jsonl
-```
-
-The output will be in the followin format:
+The JSONL output will be in the followin format:
 
 ```json
 {"addr": "192.168.1.33", "hostname": "host.local", "port": "138", "protocol": "tcp", "port_state": "open", "reason": "syn-ack", "service": "netbios-ssn", "product": "Samba smbd", "version": "3", "extrainfo": null, "scan_type": "syn"}
 ```
-
-### Converting the output in regular JSON
-
-To convert the output in regular JSON the following command can be used:
-
-```txt
-$ cat nmap-out.jsonl | jq -scr '[.[]]' > nmap-out.json
-```
-
-This will create an array of JSONs.
