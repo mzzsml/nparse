@@ -5,6 +5,7 @@ import (
     "log"
 )
 
+// The Jsonl struct encodes the Nmap XML output into sinle-lines, self-closing JSON objects.
 type Jsonl struct {
     Addr      string `json:"addr"`
     Port      int    `json:"port"`
@@ -16,33 +17,30 @@ type Jsonl struct {
     Extrainfo string `json:"extrainfo"`
 }
 
-func jsonl(n Nmaprun) (res [][]byte) {
-    var jsonl Jsonl
-    // otteniamo l'ip.
+// jsonl parses an Nmaprun object and turns it into a Jsonl object.
+func (j *Jsonl) encode(n Nmaprun) (res [][]byte) {
     // vogliamo soltanto l'ipv4
     // saltiamo hostname -> gia faccio una riga diversa per ogni porta, non posso farlo anche per ogni hostname (ammesso che la macchina abbia piu' hostname
     for _, host := range n.Hosts {
         for _, address := range host.Addrs {
             if address.AddrType == "ipv4" {
-                jsonl.Addr = address.Addr
+                j.Addr = address.Addr
             }
         }
         for _, port := range host.Ports {
-            jsonl.Port = port.PortId
-            jsonl.Protocol = port.Protocol
+            j.Port = port.PortId
+            j.Protocol = port.Protocol
 
-            state := port.State
-            jsonl.State = state.State
-            jsonl.Reason = state.Reason
+            j.State = port.State.State
+            j.Reason = port.State.Reason
 
-            service := port.Service
-            jsonl.Service = service.Name
-            jsonl.Product = service.Product
-            jsonl.Extrainfo = service.Extrainfo
+            j.Service = port.Service.Name
+            j.Product = port.Service.Product
+            j.Extrainfo = port.Service.Extrainfo
 
             // nel punto piu' "basso" del nostro struct, dobbiamo appendere il risultato ad una slice
             // in questo modo abbiamo ogni porta per riga.
-            jsonlMarshaled, err := json.Marshal(jsonl)
+            jsonlMarshaled, err := json.Marshal(j)
             if err != nil {
                 log.Fatal(err)
             }
