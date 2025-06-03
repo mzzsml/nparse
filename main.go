@@ -61,29 +61,6 @@ func output(b []byte, t string) {
     }
 }
 
-func outputJsonl(b [][]byte, t string) {
-    if t == "-" {
-        for i := 0; i < len(b); i++ {
-            fmt.Fprintf(os.Stdout, "%s\n", b[i])
-        }
-    } else {
-        file, err := os.Create(t)
-        if err != nil {
-            log.Fatal(err)
-        }
-        // Quando la funzione output() finisce, chiudiamo il file.
-        defer file.Close()
-        // FIX: il metodo Write vuole []byte, con jsonl noi abbiamo [][]byte
-
-        for i := 0; i < len(b); i++ {
-            //_, err = file.Write(b[i])
-            fmt.Fprintf(file, "%s\n", b[i])
-            if err != nil {
-                log.Fatal(err)
-            }
-        }
-    }
-}
 
 func main() {
     // Define the `-jsonl` flag, and set it to false (disabled) by default.
@@ -104,9 +81,7 @@ func main() {
     // If the flag is `-jsonl`, then use the jsonl output.
     // Else, use the regular JSON output.
     if *jsonFlag {
-        // Because jsonl returns a [][]byte type, and output() wants a []byte type, i had to make a separate function.
         var j Jsonl
-        //outputJsonl(jsonl(n), *outputFlag) //old: uses old jsonl function
         outputJsonl(j.encode(n), *outputFlag)
     } else {
         output(jsonEncode(n), *outputFlag)

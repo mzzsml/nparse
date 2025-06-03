@@ -3,6 +3,8 @@ package main
 import (
     "encoding/json"
     "log"
+    "fmt"
+    "os"
 )
 
 // The Jsonl struct encodes the Nmap XML output into sinle-lines, self-closing JSON objects.
@@ -48,4 +50,28 @@ func (j *Jsonl) encode(n Nmaprun) (res [][]byte) {
         }
     }
     return res
+}
+
+// ouputJson takes a slice of marshaled json objects ([]byte) and writes each of them
+// in the specified file. If no file is specified it prints the json objects to stdout.
+func outputJsonl(b [][]byte, t string) {
+    if t == "-" {
+        for i := 0; i < len(b); i++ {
+            fmt.Fprintf(os.Stdout, "%s\n", b[i])
+        }
+    } else {
+        file, err := os.Create(t)
+        if err != nil {
+            log.Fatal(err)
+        }
+        // Close the file when `outputJsonl` returns.
+        defer file.Close()
+        for i := 0; i < len(b); i++ {
+            //_, err = file.Write(b[i])
+            fmt.Fprintf(file, "%s\n", b[i])
+            if err != nil {
+                log.Fatal(err)
+            }
+        }
+    }
 }
