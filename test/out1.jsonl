@@ -1,0 +1,30 @@
+{"addr":"192.168.1.1","port":53,"protocol":"tcp","state":"open","reason":"syn-ack","service":"domain","product":"NLnet Labs NSD","extrainfo":""}
+{"addr":"192.168.1.1","port":80,"protocol":"tcp","state":"open","reason":"syn-ack","service":"http","product":"FRITZ!Box http config","extrainfo":""}
+{"addr":"192.168.1.1","port":443,"protocol":"tcp","state":"open","reason":"syn-ack","service":"http","product":"FRITZ!Box http config","extrainfo":""}
+{"addr":"192.168.1.1","port":5060,"protocol":"tcp","state":"open","reason":"syn-ack","service":"sip","product":"AVM FRITZ!OS SIP","extrainfo":""}
+{"addr":"192.168.1.3","port":53,"protocol":"tcp","state":"open","reason":"syn-ack","service":"tcpwrapped","product":"","extrainfo":""}
+{"addr":"192.168.1.3","port":80,"protocol":"tcp","state":"open","reason":"syn-ack","service":"http","product":"","extrainfo":""}
+{"addr":"192.168.1.3","port":443,"protocol":"tcp","state":"open","reason":"syn-ack","service":"https","product":"","extrainfo":""}
+{"addr":"192.168.1.31","port":80,"protocol":"tcp","state":"open","reason":"syn-ack","service":"http","product":"nginx","extrainfo":""}
+{"addr":"192.168.1.31","port":8008,"protocol":"tcp","state":"open","reason":"syn-ack","service":"http","product":"","extrainfo":""}
+{"addr":"192.168.1.31","port":8009,"protocol":"tcp","state":"open","reason":"syn-ack","service":"ajp13","product":"","extrainfo":""}
+{"addr":"192.168.1.31","port":8443,"protocol":"tcp","state":"open","reason":"syn-ack","service":"https-alt","product":"","extrainfo":""}
+{"addr":"192.168.1.33","port":80,"protocol":"tcp","state":"open","reason":"syn-ack","service":"http","product":"nginx","extrainfo":""}
+{"addr":"192.168.1.33","port":111,"protocol":"tcp","state":"open","reason":"syn-ack","service":"rpcbind","product":"","extrainfo":"RPC #100000"}
+{"addr":"192.168.1.33","port":139,"protocol":"tcp","state":"open","reason":"syn-ack","service":"netbios-ssn","product":"Samba smbd","extrainfo":""}
+{"addr":"192.168.1.33","port":443,"protocol":"tcp","state":"open","reason":"syn-ack","service":"http","product":"nginx","extrainfo":""}
+{"addr":"192.168.1.33","port":445,"protocol":"tcp","state":"open","reason":"syn-ack","service":"netbios-ssn","product":"Samba smbd","extrainfo":""}
+{"addr":"192.168.1.33","port":2049,"protocol":"tcp","state":"open","reason":"syn-ack","service":"nfs","product":"","extrainfo":"RPC #100003"}
+{"addr":"192.168.1.33","port":5000,"protocol":"tcp","state":"open","reason":"syn-ack","service":"http","product":"nginx","extrainfo":""}
+{"addr":"192.168.1.33","port":5357,"protocol":"tcp","state":"open","reason":"syn-ack","service":"http","product":"nginx","extrainfo":""}
+{"addr":"192.168.1.94","port":80,"protocol":"tcp","state":"open","reason":"syn-ack","service":"http","product":"","extrainfo":""}
+{"addr":"192.168.1.94","port":443,"protocol":"tcp","state":"open","reason":"syn-ack","service":"https","product":"","extrainfo":""}
+{"addr":"192.168.1.94","port":515,"protocol":"tcp","state":"open","reason":"syn-ack","service":"printer","product":"","extrainfo":""}
+{"addr":"192.168.1.94","port":631,"protocol":"tcp","state":"open","reason":"syn-ack","service":"ipp","product":"","extrainfo":""}
+{"addr":"192.168.1.94","port":9100,"protocol":"tcp","state":"open","reason":"syn-ack","service":"jetdirect","product":"","extrainfo":""}
+{"addr":"192.168.1.95","port":5000,"protocol":"tcp","state":"open","reason":"syn-ack","service":"rtsp","product":"","extrainfo":""}
+{"addr":"192.168.1.101","port":22,"protocol":"tcp","state":"open","reason":"syn-ack","service":"ssh","product":"OpenSSH","extrainfo":"protocol 2.0"}
+{"addr":"192.168.1.101","port":111,"protocol":"tcp","state":"open","reason":"syn-ack","service":"rpcbind","product":"","extrainfo":"RPC #100000"}
+{"addr":"192.168.1.101","port":3128,"protocol":"tcp","state":"open","reason":"syn-ack","service":"http","product":"Proxmox Virtual Environment REST API","extrainfo":""}
+{"addr":"192.168.1.48","port":22,"protocol":"tcp","state":"open","reason":"syn-ack","service":"ssh","product":"OpenSSH","extrainfo":"protocol 2.0"}
+{"addr":"192.168.1.48","port":5432,"protocol":"tcp","state":"open","reason":"syn-ack","service":"postgresql","product":"PostgreSQL DB","extrainfo":""}
