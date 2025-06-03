@@ -63,7 +63,9 @@ func output(b []byte, t string) {
 
 func outputJsonl(b [][]byte, t string) {
     if t == "-" {
-        fmt.Fprintf(os.Stdout, "%s\n", b)
+        for i := 0; i < len(b); i++ {
+            fmt.Fprintf(os.Stdout, "%s\n", b[i])
+        }
     } else {
         file, err := os.Create(t)
         if err != nil {
@@ -72,9 +74,13 @@ func outputJsonl(b [][]byte, t string) {
         // Quando la funzione output() finisce, chiudiamo il file.
         defer file.Close()
         // FIX: il metodo Write vuole []byte, con jsonl noi abbiamo [][]byte
-        _, err = file.Write(b[0])
-        if err != nil {
-            log.Fatal(err)
+
+        for i := 0; i < len(b); i++ {
+            //_, err = file.Write(b[i])
+            fmt.Fprintf(file, "%s\n", b[i])
+            if err != nil {
+                log.Fatal(err)
+            }
         }
     }
 }
