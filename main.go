@@ -3,7 +3,6 @@ package main
 import (
     //"encoding/xml"
     "encoding/json"
-    "flag"
     "fmt"
     "log"
     "os"
@@ -22,6 +21,7 @@ import (
 //}
 
 // xmlDecode decodes the Nmap XML into a Nmaprun struct.
+// It takes a filename and returns a Nmaprun struct.
 func xmlDecode(f string) Nmaprun {
     var n Nmaprun
     filecontent, err := os.Open(f)
@@ -53,7 +53,6 @@ func output(b []byte, t string) {
         }
         // Quando la funzione output() finisce, chiudiamo il file.
         defer file.Close()
-        // FIX: il metodo Write vuole []byte, con jsonl noi abbiamo [][]byte
         _, err = file.Write(b)
         if err != nil {
             log.Fatal(err)
@@ -61,29 +60,6 @@ func output(b []byte, t string) {
     }
 }
 
-
 func main() {
-    // Define the `-jsonl` flag, and set it to false (disabled) by default.
-    jsonFlag := flag.Bool("jsonl", false, "output to jsonl")
-    // Define the output flag, outputs to os.Stdout by default.
-    outputFlag := flag.String("o", "-", "file to output. default = Stdout")
-    // In orded to be able to access the file passed as an argument,
-    // we need to parse all the arguments.
-    flag.Parse()
-    // We can access the filename using Arg(0), since it always points to the first argument
-    // that IS NOT a flag.
-    filename := flag.Arg(0)
-
-    // Decode the XML into th structs defined in types.go.
-    //asd := unmarshalXml(filename)
-    n := xmlDecode(filename)
-
-    // If the flag is `-jsonl`, then use the jsonl output.
-    // Else, use the regular JSON output.
-    if *jsonFlag {
-        var j Jsonl
-        outputJsonl(j.encode(n), *outputFlag)
-    } else {
-        output(jsonEncode(n), *outputFlag)
-    }
+    parseFlags()
 }
