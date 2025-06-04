@@ -9,8 +9,9 @@ import (
 func parse(file io.Reader) (n Nmaprun) {
     d := xml.NewDecoder(file)
 
-    // Iterate through all the stream.
+    // Iterate through the entire stream.
     for {
+        // Get the current token.
         t, err := d.Token()
         // The Token() method returns io.EOF after it returns the last token.
         // At that point, we can exit the loop.
