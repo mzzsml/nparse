@@ -19,17 +19,17 @@ type JsonlPort struct {
 }
 
 // Prende come parametro una porta di Nmaprun, e la converte in JsonlPort
-func (p JsonlPort) ParsePort(np Port) JsonlPort {
-    p.Protocol = np.Protocol
-    p.PortId = np.PortId
-    p.State = np.State.State
-    p.Reason = np.State.Reason
-    p.Service = np.Service.Name
-    p.Product = np.Service.Product
-    p.Version = np.Service.Version
-    p.Extrainfo = np.Service.Extrainfo
-
-    return p
+func NewJsonlPort(np Port) JsonlPort {
+    return JsonlPort {
+        np.Protocol,
+        np.PortId,
+        np.State.State,
+        np.State.Reason,
+        np.Service.Name,
+        np.Service.Product,
+        np.Service.Version,
+        np.Service.Extrainfo,
+    }
 }
 
 type Jsonl struct {
@@ -45,24 +45,36 @@ func (j *Jsonl) Marshal() []byte {
     return marshaled
 }
 
-func (j *Jsonl) ParseHosts(hosts []Host) [][]byte {
-    var res [][]byte
+func NewJsonl(hosts []Host) [][]byte {
+    var (
+	    addr string
+        ports []JsonlPort
+	    res [][]byte
+    )
+
     //scorriamo gli host in []hosts
     // fare il parsing degli indirizzi
     // fare il parsing delle porte
     for _, h := range hosts {
         for _, a := range h.Addrs {
+            // we only care about the ipv4 address.
             if a.AddrType == "ipv4" {
-                j.Addr = a.Addr
+                addr = a.Addr
             }
         }
-        var ports []JsonlPort
-        var port JsonlPort
-        for _, p := range h.Ports {
-            ports = append(ports, port.ParsePort(p))
+        for i := 0; i < len(h.Ports); i++ {
+            ports = append(ports, NewJsonlPort(h.Ports[i]))
         }
-        j.Ports = ports
-        res = append(res, j.Marshal())
+
+        jsonl := &Jsonl {
+            Addr: addr,
+            Ports: ports,
+        }
+        // qui faccio il marshal dello struct jsonl in json.
+        // magari ritorno solo lo struct?
+        // ritornare solo struct dovrebbe essere piu' testabile
+        //res = append(res, j.Marshal())
+        res = append(res, jsonl.Marshal())
     }
     return res
 }

@@ -2,8 +2,6 @@ package lib
 
 import (
 	"flag"
-	//"os"
-	//"log"
 )
 
 const (
@@ -36,8 +34,7 @@ func ParseFlags() {
 	// By default is Stdout
 	if jsonlFlag {
 		n := ParseFromFile(filename)
-		var j Jsonl
-		PrintHosts(j.ParseHosts(n.Hosts), outputFlag)
+		PrintHosts(NewJsonl(n.Hosts), outputFlag)
 	} else {
 		// Regular JSON output.
 		n := ParseFromFile(filename)
