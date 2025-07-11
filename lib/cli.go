@@ -1,6 +1,10 @@
 package lib
 
-import "flag"
+import (
+	"flag"
+	//"os"
+	//"log"
+)
 
 const (
 	jsonlFlagHelp  = "Get the ouput in JSON Lines format."
@@ -31,12 +35,12 @@ func ParseFlags() {
 	// The outputJsonl function then outputs the result to the value specified with the `-output` flag.
 	// By default is Stdout
 	if jsonlFlag {
-		n := XmlDecode(filename)
+		n := ParseFromFile(filename)
 		var j Jsonl
 		PrintHosts(j.ParseHosts(n.Hosts), outputFlag)
 	} else {
 		// Regular JSON output.
-		n := XmlDecode(filename)
+		n := ParseFromFile(filename)
 		Print(n.Encode(), outputFlag)
 	}
 }
