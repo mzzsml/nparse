@@ -2,6 +2,8 @@ package main
 
 import (
     "flag"
+
+    "github.com/mzzsml/nparse"
 )
 
 const (
