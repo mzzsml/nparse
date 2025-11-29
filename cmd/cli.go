@@ -28,6 +28,6 @@ func ParseFlags() {
     // If `-jsonl` is specified, call the `outputJsonl` function.
     // The outputJsonl function then outputs the result to the value specified with the `-output` flag.
     // By default is Stdout
-    n, _ := ParseFile(filename)
-    Print(n.Json(), outputFlag)
+    n, _ := nparse.ParseFile(filename)
+    nparse.Print(n.Json(), outputFlag)
 }
