@@ -8,11 +8,14 @@ import (
     "fmt"
 )
 
+// NmapScan is the unmarshaled version of the Nmap's XML output.
 type NmapScan struct {
     Args  string `xml:"args,attr" json:"args"`
     Hosts []Host `xml:"host" json:"hosts"`
 }
 
+// NewNmapScan reads the content of the Nmap's XML file, in bytes, and returns a
+// NmapScan struct, or an error.
 func NewNmapScan(data []byte) (n *NmapScan, err error) {
     err = xml.Unmarshal(data, &n)
     if err != nil {
@@ -22,7 +25,7 @@ func NewNmapScan(data []byte) (n *NmapScan, err error) {
     return n, nil
 }
 
-// jsonEncode encodes an NmapScan variable to JSON.
+// Json simply marshals an NmapScan to JSON.
 func (n *NmapScan) Json() []byte {
     b, err := json.Marshal(&n)
     if err != nil {
@@ -31,28 +34,30 @@ func (n *NmapScan) Json() []byte {
     return b
 }
 
-// jsonl parses an NmapScan object and turns it into a Jsonl object.
+// GetHosts simply returns a list of all the Hosts contained in a NmapScan.
 func (n *NmapScan) GetHosts() []Host {
     var hosts []Host
-    // scorriamo tutti gli host in NmapScan e li mettiamo in Hosts
     for _, h := range n.Hosts {
         hosts = append(hosts, h)
     }
     return hosts
 }
 
+// Host is a marshaled version of the hosts nodes in the XML.
 type Host struct {
     Addrs     []Address `xml:"address" json:"addrs"`
     Hostnames []string  `xml:"host>hostnames" json:"hostnames"`
     Ports     []Port    `xml:"ports>port" json:"ports"`
 }
 
+// Address is a marshaled version of the hosts nodes in the XML.
 type Address struct {
     Addr     string `xml:"addr,attr" json:"addr"`
     AddrType string `xml:"addrtype,attr" json:"addrType"`
     Vendor   string `xml:"vendor,attr" json:"vendor"`
 }
 
+// Port is a marshaled version of the hosts nodes in the XML.
 type Port struct {
     Protocol string  `xml:"protocol,attr" json:"protocol"`
     PortId   int     `xml:"portid,attr" json:"portId"`
@@ -60,11 +65,13 @@ type Port struct {
     Service  Service `xml:"service" json:"service"`
 }
 
+// State is a marshaled version of the hosts nodes in the XML.
 type State struct {
     State  string `xml:"state,attr" json:"state"`
     Reason string `xml:"reason,attr" json:"reason"`
 }
 
+// Service is a marshaled version of the hosts nodes in the XML.
 type Service struct {
     Name      string `xml:"name,attr" json:"name"`
     Product   string `xml:"product,attr" json:"product"`
@@ -72,6 +79,8 @@ type Service struct {
     Extrainfo string `xml:"extrainfo,attr" json:"extrainfo"`
 }
 
+// ParseFile takes a filepath as argument, and returns a NmapScan struct, or an
+// error.
 func ParseFile(p string) (n *NmapScan, err error) {
     fs, err := os.Stat(p)
     if fs == nil &&  err != nil {
@@ -93,8 +102,8 @@ func ParseFile(p string) (n *NmapScan, err error) {
     return
 }
 
-// output prints Nparse output.
-// It prints either to stdout or to a file, depending if the relative `-o` flag is set.
+// Print prints the output either to Stdout (in case the command line `-` option
+// is provided, or to a file.
 func Print(b []byte, t string) {
     if t == "-" {
         fmt.Fprintf(os.Stdout, "%s\n", b)
