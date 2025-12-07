@@ -1,4 +1,4 @@
-package main
+package nparse
 
 import (
     "bytes"
