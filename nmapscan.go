@@ -1,122 +1,73 @@
 package nparse
 
 import (
-    "encoding/xml"
-    "encoding/json"
-    "log"
-    "os"
-    "fmt"
+	"encoding/json"
+	"encoding/xml"
 )
 
 // NmapScan is the unmarshaled version of the Nmap's XML output.
 type NmapScan struct {
-    Args  string `xml:"args,attr" json:"args"`
-    Hosts []Host `xml:"host" json:"hosts"`
+	Args  string `xml:"args,attr" json:"args"`
+	Hosts []Host `xml:"host" json:"hosts"`
 }
 
 // NewNmapScan reads the content of the Nmap's XML file, in bytes, and returns a
 // NmapScan struct, or an error.
-func NewNmapScan(data []byte) (n *NmapScan, err error) {
-    err = xml.Unmarshal(data, &n)
-    if err != nil {
-        log.Fatalf("error unmarshaling xml: %s", err)
-        return n, err
-    }
-    return n, nil
+func NewNmapScan(data []byte) (*NmapScan, error) {
+	var n *NmapScan
+	if err := xml.Unmarshal(data, &n); err != nil {
+		return n, err
+	}
+	return n, nil
 }
 
 // Json simply marshals an NmapScan to JSON.
 func (n *NmapScan) Json() []byte {
-    b, err := json.Marshal(&n)
-    if err != nil {
-        log.Fatal(err)
-    }
-    return b
+	b, _ := json.Marshal(&n)
+	return b
 }
 
 // GetHosts simply returns a list of all the Hosts contained in a NmapScan.
 func (n *NmapScan) GetHosts() []Host {
-    var hosts []Host
-    for _, h := range n.Hosts {
-        hosts = append(hosts, h)
-    }
-    return hosts
+	var hosts []Host
+	for _, h := range n.Hosts {
+		hosts = append(hosts, h)
+	}
+	return hosts
 }
 
 // Host is a marshaled version of the hosts nodes in the XML.
 type Host struct {
-    Addrs     []Address `xml:"address" json:"addrs"`
-    Hostnames []string  `xml:"host>hostnames" json:"hostnames"`
-    Ports     []Port    `xml:"ports>port" json:"ports"`
+	Addrs     []Address `xml:"address" json:"addrs"`
+	Hostnames []string  `xml:"host>hostnames" json:"hostnames"`
+	Ports     []Port    `xml:"ports>port" json:"ports"`
 }
 
 // Address is a marshaled version of the hosts nodes in the XML.
 type Address struct {
-    Addr     string `xml:"addr,attr" json:"addr"`
-    AddrType string `xml:"addrtype,attr" json:"addrType"`
-    Vendor   string `xml:"vendor,attr" json:"vendor"`
+	Addr     string `xml:"addr,attr" json:"addr"`
+	AddrType string `xml:"addrtype,attr" json:"addrType"`
+	Vendor   string `xml:"vendor,attr" json:"vendor"`
 }
 
 // Port is a marshaled version of the hosts nodes in the XML.
 type Port struct {
-    Protocol string  `xml:"protocol,attr" json:"protocol"`
-    PortId   int     `xml:"portid,attr" json:"portId"`
-    State    State   `xml:"state" json:"state"`
-    Service  Service `xml:"service" json:"service"`
+	Protocol string `xml:"protocol,attr" json:"protocol"`
+	PortId   int    `xml:"portid,attr" json:"portId"`
+	State    `xml:"state" json:"state"`
+	Service  `xml:"service" json:"service"`
 }
 
 // State is a marshaled version of the hosts nodes in the XML.
 type State struct {
-    State  string `xml:"state,attr" json:"state"`
-    Reason string `xml:"reason,attr" json:"reason"`
+	State  string `xml:"state,attr" json:"state"`
+	Reason string `xml:"reason,attr" json:"reason"`
 }
 
 // Service is a marshaled version of the hosts nodes in the XML.
 type Service struct {
-    Name      string `xml:"name,attr" json:"name"`
-    Product   string `xml:"product,attr" json:"product"`
-    Version   string `xml:"version,attr" json:"version"`
-    Extrainfo string `xml:"extrainfo,attr" json:"extrainfo"`
-}
-
-// ParseFile takes a filepath as argument, and returns a NmapScan struct, or an
-// error.
-func ParseFile(p string) (n *NmapScan, err error) {
-    fs, err := os.Stat(p)
-    if fs == nil &&  err != nil {
-        return
-    }
-    file, err := os.Open(p)
-    if err != nil {
-        return
-    }
-    b := make([]byte, fs.Size())
-    _, err = file.Read(b)
-    if err != nil {
-        return
-    }
-    n, err = NewNmapScan(b)
-    if err != nil {
-        return
-    }
-    return
-}
-
-// Print prints the output either to Stdout (in case the command line `-` option
-// is provided, or to a file.
-func Print(b []byte, t string) {
-    if t == "-" {
-        fmt.Fprintf(os.Stdout, "%s\n", b)
-    } else {
-        file, err := os.Create(t)
-        if err != nil {
-            log.Fatal(err)
-        }
-        // Quando la funzione output() finisce, chiudiamo il file.
-        defer file.Close()
-        _, err = file.Write(b)
-        if err != nil {
-            log.Fatal(err)
-        }
-    }
+	Name      string `xml:"name,attr" json:"name"`
+	Product   string `xml:"product,attr" json:"product"`
+	Version   string `xml:"version,attr" json:"version"`
+	Extrainfo string `xml:"extrainfo,attr" json:"extrainfo"`
 }
