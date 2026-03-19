@@ -27,14 +27,9 @@ func (n *NmapScan) Json() []byte {
     return b
 }
 
-// Hosts simply returns a list of all the Hosts contained in a NmapScan struct.
-func (n *NmapScan) GetHosts() []Host {
-    return n.Hosts
-}
-
-// GetHost simply returns the information about the provided host.
-// GetHost only accepts the host's IPv4 as parameter.
-func (n *NmapScan) GetHost(addr string) Host {
+// Host simply returns the information about the provided host.
+// Host only accepts the host's IPv4 as parameter.
+func (n *NmapScan) Host(addr string) Host {
     for _, host := range n.Hosts {
         for _, a := range host.Addrs {
             if a.AddrType == "ipv4" && a.Addr == addr {
@@ -55,9 +50,9 @@ type Host struct {
     ScannedAt  string     `xml:"endtime,attr" json:"scannedAt"`
 }
 
-// AddrData returns all the information held by Address struct associated with the
+// AddrInfo returns all the information held by Address struct associated with the
 // given address type ("ipv4" or "mac").
-func (h Host) AddrData(addrType string) Address {
+func (h Host) AddrInfo(addrType string) Address {
     switch addrType {
     case "ipv4":
         for _, addr := range h.Addrs {
