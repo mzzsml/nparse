@@ -76,7 +76,7 @@ type Status struct {
 }
 
 type Hostname struct {
-    Hostaname string `xml:"name,attr" json:"hostname"`
+    Hostname string `xml:"name,attr" json:"hostname"`
     Type      string `xml:"type,attr" json:"type"`
 }
 
