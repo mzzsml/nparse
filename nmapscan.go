@@ -1,3 +1,11 @@
+// Package nparse simply mirrors the fields and data from the Nmap's XML output,
+// and provides some functionality to handle it.
+//
+// Note that it does not mirror 100% of Nmap's data, but only the portions
+// useful to the author.
+//
+// The structure of the NmapScan type resembles the one of the Nmap's original
+// XML output.
 package nparse
 
 import (
@@ -15,19 +23,19 @@ func NewNmapScan(data []byte) (*NmapScan, error) {
     return n, nil
 }
 
-// NmapScan is the unmarshaled version of the Nmap's XML output.
+// A NmapScan represents the <nmapscan> element.
 type NmapScan struct {
     Args  string `xml:"args,attr" json:"args"`
     Hosts []Host `xml:"host" json:"hosts"`
 }
 
-// Json simply marshals an NmapScan to JSON.
+// Json simply marshals an NmapScan into JSON.
 func (n *NmapScan) Json() []byte {
     b, _ := json.Marshal(&n)
     return b
 }
 
-// Host simply returns the information about the provided host.
+// Host simply returns the information about the host specified in the argument.
 // Host only accepts the host's IPv4 as parameter.
 func (n *NmapScan) Host(addr string) Host {
     for _, host := range n.Hosts {
@@ -40,7 +48,7 @@ func (n *NmapScan) Host(addr string) Host {
     return Host{}
 }
 
-// Host holds the host node from the XML.
+// Host represents the <host> node.
 type Host struct {
     Status     State      `xml:"status" json:"status"`
     Addrs      []Address  `xml:"address" json:"addrs"`
@@ -51,7 +59,7 @@ type Host struct {
 }
 
 // AddrInfo returns all the information held by Address struct associated with the
-// given address type ("ipv4" or "mac").
+// specified address type (either "ipv4" or "mac").
 func (h Host) AddrInfo(addrType string) Address {
     switch addrType {
     case "ipv4":
@@ -70,24 +78,27 @@ func (h Host) AddrInfo(addrType string) Address {
     return Address{}
 }
 
+// Status represents the <status> element.
+// It represents state of host during the scan.
 type Status struct {
     State  string `xml:"state,attr" json:"state"`
     Reason string `xml:"reason,attr" json:"reason"`
 }
 
+// Hostname represents the <hostanme> element.
 type Hostname struct {
     Hostname string `xml:"name,attr" json:"hostname"`
     Type      string `xml:"type,attr" json:"type"`
 }
 
-// Address holds the address subnodes of the host nodes in the XML.
+// Address represents the <address> subnodes of the <host> nodes.
 type Address struct {
     Addr     string `xml:"addr,attr" json:"addr"`
     AddrType string `xml:"addrtype,attr" json:"addrType"`
     Vendor   string `xml:"vendor,attr" json:"vendor"`
 }
 
-// Port is a marshaled version of the hosts nodes in the XML.
+// Port represents the <port> element.
 type Port struct {
     Protocol string  `xml:"protocol,attr" json:"protocol"`
     PortId   int     `xml:"portid,attr" json:"portId"`
@@ -95,13 +106,15 @@ type Port struct {
     Service  Service `xml:"service" json:"service"`
 }
 
-// State is a marshaled version of the hosts nodes in the XML.
+// State represents the <state> element.
+// It represents the state of a port.
 type State struct {
     State  string `xml:"state,attr" json:"state"`
     Reason string `xml:"reason,attr" json:"reason"`
 }
 
-// Service is a marshaled version of the hosts nodes in the XML.
+// Service represents the <service> element.
+// It represents the service running on a port.
 type Service struct {
     Name      string `xml:"name,attr" json:"name"`
     Product   string `xml:"product,attr" json:"product"`
@@ -109,6 +122,9 @@ type Service struct {
     Extrainfo string `xml:"extrainfo,attr" json:"extrainfo"`
 }
 
+// ExtraPort represents the <extraport> element.
+// It holds information about all of the "other" ports, either in closed or
+// filtered state, and the total number of them.
 type ExtraPort struct {
     State string `xml:"state,attr" json:"state"`
     Count string `xml:"count,attr" json:"count"`
